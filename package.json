@@ -1,0 +1,9 @@
+{
+  "name": "bazaaro",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
