@@ -24,7 +24,7 @@ async function search() {
  const q = document.getElementById("query").value;
  document.getElementById("result").innerHTML = "Thinking...";
 
- const res = await fetch(https://merabazar-5w4l.onrender.com);
+ const res = await fetch("https://merabazar-5w4l.onrender.com/api/search?q=" + encodeURIComponent(q));
  const data = await res.json();
 
  document.getElementById("result").innerHTML = `
