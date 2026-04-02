@@ -22,20 +22,25 @@
 <script>
 async function search() {
  const q = document.getElementById("query").value;
+
  document.getElementById("result").innerHTML = "Thinking...";
 
- const res = await fetch("https://merabazar-5w4l.onrender.com/api/search?q=" + encodeURIComponent(q));
- const data = await res.json();
+ try {
+   const res = await fetch("https://merabazar-5w4l.onrender.com/api/search?q=" + encodeURIComponent(q));
+   const data = await res.json();
 
- document.getElementById("result").innerHTML = `
- <div class="card">
- <h2>${data.title}</h2>
- <p><strong>Best Pick:</strong> ${data.best}</p>
- <p><strong>Why:</strong> ${data.reason}</p>
- <p><strong>Price:</strong> ${data.price}</p>
- <a href="${data.link}" target="_blank">Buy Now</a>
- </div>
- `;
+   document.getElementById("result").innerHTML = `
+   <div class="card">
+     <h2>${data.title}</h2>
+     <p><strong>Best Pick:</strong> ${data.best}</p>
+     <p><strong>Why:</strong> ${data.reason}</p>
+     <p><strong>Price:</strong> ${data.price}</p>
+     <a href="${data.link}" target="_blank">Buy Now</a>
+   </div>
+   `;
+ } catch (err) {
+   document.getElementById("result").innerHTML = "Error connecting to server";
+ }
 }
 </script>
 
