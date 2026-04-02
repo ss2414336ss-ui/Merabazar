@@ -1,0 +1,47 @@
+body {
+font-family: system-ui;
+background: linear-gradient(135deg,#0f172a,#1e293b);
+color: white;
+text-align: center;
+margin:0;
+}
+
+.container {
+margin-top: 80px;
+}
+
+h1 {
+font-size: 42px;
+}
+
+.tagline {
+color: #94a3b8;
+margin-bottom: 30px;
+}
+
+.search-box input {
+padding: 14px;
+width: 60%;
+border-radius: 10px;
+border: none;
+}
+
+.search-box button {
+padding: 14px 20px;
+margin-left: 10px;
+border-radius: 10px;
+border: none;
+background: #22c55e;
+color: white;
+font-weight: bold;
+}
+
+.card {
+margin-top: 30px;
+background: #1e293b;
+padding: 20px;
+border-radius: 12px;
+display: inline-block;
+text-align: left;
+max-width: 500px;
+}
