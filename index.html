@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bazaaro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+<h1>Bazaaro</h1>
+<p class="tagline">Don't compare. Just decide.</p>
+
+<input id="query" placeholder="Search product..." />
+<button onclick="search()">Find Best Option</button>
+
+<div id="result"></div>
+</div>
+
+<script>
+async function search() {
+ const query = document.getElementById("query").value;
+ const res = await fetch("/api/search?q=" + query);
+ const data = await res.json();
+
+ document.getElementById("result").innerHTML = `
+ <h3>${data.title}</h3>
+ <p>Best: ${data.best}</p>
+ <p>Price: ${data.price}</p>
+ <p>Platform: ${data.platform}</p>
+ <a href="${data.link}" target="_blank">Buy Now</a>
+ `;
+}
+</script>
+
+</body>
+</html>
