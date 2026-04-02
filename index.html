@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bazaaro</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+  <h1>Bazaaro</h1>
+  <p class="tagline">Don't compare. Just decide.</p>
+
+  <div class="search-box">
+    <input id="query" type="text" placeholder="Search product..." autocomplete="off" />
+    <button id="searchBtn" onclick="search()">Search</button>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  document.getElementById('query').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') search();
+  });
+
+  async function search() {
+    const q = document.getElementById('query').value.trim();
+    if (!q) return;
+
+    const btn = document.getElementById('searchBtn');
+    const result = document.getElementById('result');
+
+    // Loading state
+    btn.disabled = true;
+    btn.textContent = 'Thinking…';
+    result.innerHTML = '<div class="loading"><div class="spinner"></div><span>Analyzing products…</span></div>';
+
+    try {
+      // FIX: use relative URL — works on localhost AND on Render, no hardcoded domain
+      const res = await fetch('/api/search?q=' + encodeURIComponent(q));
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Server returned error ' + res.status);
+      }
+
+      const data = await res.json();
+
+      if (data.error) throw new Error(data.error);
+
+      // FIX: render all structured fields from the patched server response
+      result.innerHTML = `
+        <div class="card">
+          <h2>${escapeHtml(data.title || 'Best Pick')}</h2>
+          <p><strong>Best Pick:</strong> ${escapeHtml(data.best || '—')}</p>
+          <p><strong>Why:</strong> ${escapeHtml(data.reason || '—')}</p>
+          <p><strong>Price:</strong> ${escapeHtml(data.price || '—')}</p>
+          <p><strong>Platform:</strong> ${escapeHtml(data.platform || '—')}</p>
+          <a href="${escapeHtml(data.link || '#')}" target="_blank" rel="noopener">Buy Now →</a>
+        </div>
+      `;
+
+    } catch (err) {
+      // FIX: show the actual error instead of a generic message
+      result.innerHTML = `<div class="error">⚠️ ${escapeHtml(err.message)}</div>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Search';
+    }
+  }
+
+  // Prevent XSS from AI-generated content
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+</script>
+
+</body>
+</html>
